@@ -1,8 +1,8 @@
-package com.example.hotelrental.service;
+package com.example.funnycation.service;
 
-import com.example.hotelrental.dto.UserDTO;
-import com.example.hotelrental.model.User;
-import com.example.hotelrental.repository.UserRepository;
+import com.example.funnycation.dto.UserDTO;
+import com.example.funnycation.models.User;
+import com.example.funnycation.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

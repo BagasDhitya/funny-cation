@@ -1,8 +1,8 @@
-package com.example.hotelrental.service;
+package com.example.funnycation.service;
 
-import com.example.hotelrental.dto.HotelDTO;
-import com.example.hotelrental.model.Hotel;
-import com.example.hotelrental.repository.HotelRepository;
+import com.example.funnycation.dto.HotelDTO;
+import com.example.funnycation.models.Hotel;
+import com.example.funnycation.repositories.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
