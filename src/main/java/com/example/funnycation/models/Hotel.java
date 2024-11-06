@@ -3,18 +3,24 @@ package com.example.funnycation.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
+@Table(name = "hotels")
 @Data
 public class Hotel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String location;
-    private String description;
 
-    @OneToMany(mappedBy = "hotel")
-    private List<Room> rooms;
+    @Column(nullable = false, length = 100)
+    private String name;
+
+    @Column(nullable = false, length = 255)
+    private String address;
+
+    @Column(nullable = false)
+    private Double rating;
+
+    @Column(nullable = false, length = 15)
+    private String phone;
 }
