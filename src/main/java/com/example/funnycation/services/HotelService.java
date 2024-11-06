@@ -1,52 +1,47 @@
 package com.example.funnycation.services;
 
-import com.example.funnycation.dto.HotelDTO;
-import com.example.funnycation.models.Hotel;
 import com.example.funnycation.repositories.HotelRepository;
+import com.example.funnycation.models.Hotel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class HotelService {
+
     @Autowired
     private HotelRepository hotelRepository;
 
+    // Get all hotels
     public List<Hotel> getAllHotels() {
         return hotelRepository.findAll();
     }
 
-    public Hotel getHotelById(Long id) {
-        return hotelRepository.findById(id).orElse(null);
+    // Get hotel by id
+    public Optional<Hotel> getHotelById(Long id) {
+        return hotelRepository.findById(id);
     }
 
-    public Hotel createHotel(HotelDTO hotelDTO) {
-        Hotel hotel = new Hotel();
-        hotel.setName(hotelDTO.getName());
-        hotel.setLocation(hotelDTO.getLocation());
-        hotel.setDescription(hotelDTO.getDescription());
+    // Create new hotel
+    public Hotel createHotel(Hotel hotel) {
         return hotelRepository.save(hotel);
     }
 
-    public Hotel updateHotel(Long id, HotelDTO hotelDTO) {
-        Optional<Hotel> optionalHotel = hotelRepository.findById(id);
-        if (optionalHotel.isPresent()) {
-            Hotel hotel = optionalHotel.get();
-            hotel.setName(hotelDTO.getName());
-            hotel.setLocation(hotelDTO.getLocation());
-            hotel.setDescription(hotelDTO.getDescription());
-            return hotelRepository.save(hotel);
-        }
-        return null;
+    // Update existing hotel
+    public Hotel updateHotel(Long id, Hotel hotelDetails) {
+        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new RuntimeException("Hotel not found"));
+        hotel.setName(hotelDetails.getName());
+        hotel.setAddress(hotelDetails.getAddress());
+        hotel.setRating(hotelDetails.getRating());
+        hotel.setPhone(hotelDetails.getPhone());
+        return hotelRepository.save(hotel);
     }
 
-    public boolean deleteHotel(Long id) {
-        if (hotelRepository.existsById(id)) {
-            hotelRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    // Delete hotel by id
+    public void deleteHotel(Long id) {
+        hotelRepository.deleteById(id);
     }
 }
