@@ -42,7 +42,11 @@ public class HotelService {
         return null;
     }
 
-    public void deleteHotel(Long id) {
-        hotelRepository.deleteById(id);
+    public boolean deleteHotel(Long id) {
+        if (hotelRepository.existsById(id)) {
+            hotelRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
