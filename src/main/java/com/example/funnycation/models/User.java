@@ -1,4 +1,4 @@
-package com.example.hotelrental.model;
+package com.example.funnycation.models;
 
 import jakarta.persistence.*;
 import lombok.Data;

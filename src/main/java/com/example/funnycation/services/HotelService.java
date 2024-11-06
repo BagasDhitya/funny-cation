@@ -1,4 +1,4 @@
-package com.example.funnycation.service;
+package com.example.funnycation.services;
 
 import com.example.funnycation.dto.HotelDTO;
 import com.example.funnycation.models.Hotel;
