@@ -9,5 +9,6 @@ com/example/funnycation/models/Room.class
 com/example/funnycation/controllers/UserController.class
 com/example/funnycation/FunnycationApplication.class
 com/example/funnycation/services/UserService.class
+com/example/funnycation/security/SecurityConfig.class
 com/example/funnycation/models/Hotel.class
 com/example/funnycation/repositories/HotelRepository.class
