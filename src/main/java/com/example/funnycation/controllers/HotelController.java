@@ -1,7 +1,6 @@
 package com.example.funnycation.controllers;
 
 import com.example.funnycation.dto.HotelDTO;
-import com.example.funnycation.dto.ApiResponse;
 import com.example.funnycation.models.Hotel;
 import com.example.funnycation.services.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,48 +12,53 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/hotels")
 public class HotelController {
+
     @Autowired
     private HotelService hotelService;
 
+    // Get all hotels
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Hotel>>> getAllHotels() {
-        List<Hotel> hotels = hotelService.getAllHotels();
-        return ResponseEntity.ok(new ApiResponse<>(hotels, 200));
+    public List<Hotel> getAllHotels() {
+        return hotelService.getAllHotels();
     }
 
+    // Get hotel by id
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> getHotelById(@PathVariable Long id) {
-        Hotel hotel = hotelService.getHotelById(id);
-        if (hotel != null) {
-            return ResponseEntity.ok(new ApiResponse<>(hotel, 200));
-        } else {
-            return ResponseEntity.status(404).body(new ApiResponse<>("Hotel not found", 404));
-        }
+    public ResponseEntity<Hotel> getHotelById(@PathVariable Long id) {
+        Hotel hotel = hotelService.getHotelById(id)
+                .orElseThrow(() -> new RuntimeException("Hotel not found"));
+        return ResponseEntity.ok(hotel);
     }
 
+    // Create new hotel
     @PostMapping
-    public ResponseEntity<ApiResponse<Hotel>> createHotel(@RequestBody HotelDTO hotelDTO) {
-        Hotel hotel = hotelService.createHotel(hotelDTO);
-        return ResponseEntity.status(201).body(new ApiResponse<>(hotel, 201));
+    public Hotel createHotel(@RequestBody HotelDTO hotelDTO) {
+        Hotel hotel = new Hotel();
+        hotel.setName(hotelDTO.getName());
+        hotel.setAddress(hotelDTO.getAddress());
+        hotel.setRating(hotelDTO.getRating());
+        hotel.setPhone(hotelDTO.getPhone());
+
+        return hotelService.createHotel(hotel);
     }
 
+    // Update hotel by id
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> updateHotel(@PathVariable Long id, @RequestBody HotelDTO hotelDTO) {
-        Hotel updatedHotel = hotelService.updateHotel(id, hotelDTO);
-        if (updatedHotel != null) {
-            return ResponseEntity.ok(new ApiResponse<>(updatedHotel, 200));
-        } else {
-            return ResponseEntity.status(404).body(new ApiResponse<>("Hotel not found", 404));
-        }
+    public ResponseEntity<Hotel> updateHotel(@PathVariable Long id, @RequestBody HotelDTO hotelDTO) {
+        Hotel hotel = new Hotel();
+        hotel.setName(hotelDTO.getName());
+        hotel.setAddress(hotelDTO.getAddress());
+        hotel.setRating(hotelDTO.getRating());
+        hotel.setPhone(hotelDTO.getPhone());
+
+        Hotel updatedHotel = hotelService.updateHotel(id, hotel);
+        return updatedHotel != null ? ResponseEntity.ok(updatedHotel) : ResponseEntity.notFound().build();
     }
 
+    // Delete hotel by id
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> deleteHotel(@PathVariable Long id) {
-        boolean isDeleted = hotelService.deleteHotel(id);
-        if (isDeleted) {
-            return ResponseEntity.status(204).body(new ApiResponse<>(null, 204));
-        } else {
-            return ResponseEntity.status(404).body(new ApiResponse<>("Hotel not found", 404));
-        }
+    public ResponseEntity<Void> deleteHotel(@PathVariable Long id) {
+        hotelService.deleteHotel(id);
+        return ResponseEntity.noContent().build();
     }
 }
